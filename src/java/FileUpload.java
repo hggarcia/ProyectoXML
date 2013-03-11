@@ -25,6 +25,25 @@ import org.jdom2.output.XMLOutputter;
 
 
 public class FileUpload extends HttpServlet {
+    
+    public static void listChildren(Element current, int depth) {
+      System.out.println(current.getName());
+      System.out.println(depth);
+      List children1 = current.getChildren();
+      if(depth == 1) {
+          for(int i=0; i<=children1.size(); i++)
+          {
+          current.removeChildren(current.getChildren().get(0).getName());
+          }
+        }
+    List children = current.getChildren();
+    Iterator iterator = children.iterator();
+    while (iterator.hasNext()) {        
+      Element child = (Element) iterator.next();
+      listChildren(child, depth+1);   
+
+    }
+    }
 
     public void processXml(String ruta)
     {   
@@ -35,16 +54,18 @@ public class FileUpload extends HttpServlet {
     {
         //Se crea el documento a traves del archivo
         Document document = (Document) builder.build(xmlFile);
- 
+        Element root = document.getRootElement();
+        listChildren(root, 0);
        
-        
          XMLOutputter xmlOutput = new XMLOutputter();
  
 		// display nice nice
+                String salida = getServletContext().getRealPath("/");
 		xmlOutput.setFormat(Format.getPrettyFormat());
-		xmlOutput.output(document, new FileWriter("resultado.xml"));
+		xmlOutput.output(document, new FileWriter(salida + "/resultado.xml"));
  
 		System.out.println("File Saved!");
+                 
     }catch ( IOException io ) {
         System.out.println( io.getMessage() );
     }catch ( JDOMException jdomex ) {
@@ -91,6 +112,7 @@ public class FileUpload extends HttpServlet {
 	        }
                 
                 processXml(ruta);
+                request.getRequestDispatcher( "resultado.xml" ).forward( request, response );  
                 
 	    }
 

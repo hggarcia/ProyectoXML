@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<test>
+    <uno>
+        una prueba
+        <item>prueba a</item>
+            <vacio/>
+        <item>prueba b</item>
+    </uno>
+    <dos>
+        <item>
+            <subitem> prueba c </subitem>
+        </item>
+    </dos>
+</test>
